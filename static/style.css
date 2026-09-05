@@ -224,7 +224,7 @@ img {
   margin-bottom: 1.25rem;
 }
 
-.post-list--full li {
+.post-list--full li:not(:last-child) {
   padding-bottom: 1.25rem;
   border-bottom: 1px solid var(--rule);
 }
