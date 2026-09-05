@@ -13,6 +13,10 @@ type Post struct {
 	Tags    []string
 	Summary string
 	Content template.HTML
+	// Body is the raw Markdown source (post-frontmatter), kept around for
+	// search — matching against this avoids false hits on HTML markup that
+	// searching the rendered Content would produce.
+	Body string
 }
 
 // Project is a single portfolio entry.

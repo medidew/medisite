@@ -17,6 +17,7 @@ type homeData struct {
 type blogIndexData struct {
 	Title string
 	Posts []*content.Post
+	Query string // always empty; present so the shared search form partial can read .Query
 }
 
 type articleData struct {
@@ -27,6 +28,12 @@ type articleData struct {
 type portfolioData struct {
 	Title    string
 	Projects []content.Project
+}
+
+type searchData struct {
+	Title   string
+	Query   string
+	Results []*content.Post
 }
 
 type notFoundData struct {
@@ -74,6 +81,15 @@ func (s *Server) handleArticle(w http.ResponseWriter, r *http.Request) {
 	s.render(w, "article", http.StatusOK, articleData{
 		Title: post.Title + " — " + siteName,
 		Post:  post,
+	})
+}
+
+func (s *Server) handleSearch(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("q")
+	s.render(w, "search", http.StatusOK, searchData{
+		Title:   "Search — " + siteName,
+		Query:   query,
+		Results: s.site.Search(query),
 	})
 }
 

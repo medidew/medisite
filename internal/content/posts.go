@@ -99,5 +99,6 @@ func parsePost(path, filename string) (*Post, error) {
 		Tags:    fm.Tags,
 		Summary: fm.Summary,
 		Content: template.HTML(buf.String()),
+		Body:    string(bytes.TrimSpace(body)),
 	}, nil
 }

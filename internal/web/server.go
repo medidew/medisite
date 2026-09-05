@@ -12,7 +12,7 @@ import (
 )
 
 // pageNames are the templates/{name}.html.tmpl files parsed alongside base.html.tmpl.
-var pageNames = []string{"home", "blog_index", "article", "portfolio", "404"}
+var pageNames = []string{"home", "blog_index", "article", "portfolio", "search", "404"}
 
 // Server holds the loaded site content and pre-parsed templates, and
 // implements http.Handler via its embedded mux.

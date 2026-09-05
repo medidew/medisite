@@ -13,6 +13,7 @@ func newMux(s *Server, staticDir string) *http.ServeMux {
 	mux.HandleFunc("GET /blog", s.handleBlogIndex)
 	mux.HandleFunc("GET /blog/{slug}", s.handleArticle)
 	mux.HandleFunc("GET /portfolio", s.handlePortfolio)
+	mux.HandleFunc("GET /search", s.handleSearch)
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir))))
 	mux.HandleFunc("/", s.handleNotFound)
 

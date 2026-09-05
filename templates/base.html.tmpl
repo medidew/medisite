@@ -36,3 +36,11 @@
 </body>
 </html>
 {{end}}
+
+{{define "search_form"}}
+<form class="search-form" method="GET" action="/search">
+  <label for="q" class="visually-hidden">Search posts</label>
+  <input type="search" id="q" name="q" placeholder="Search posts&hellip;" value="{{.Query}}">
+  <button type="submit">Search</button>
+</form>
+{{end}}
