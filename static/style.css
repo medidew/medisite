@@ -1,0 +1,230 @@
+/* medisite — old-web, text-first, no gradients, no chrome. */
+
+:root {
+  --bg: #ffffff;
+  --text: #202122;
+  --link: #0645ad;
+  --link-visited: #543a83;
+  --muted: #54595d;
+  --rule: #c8ccd1;
+
+  --font-serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+
+  --measure: 42rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  padding: clamp(1rem, 4vw, 2.5rem) clamp(1rem, 5vw, 1.5rem);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+main,
+.site-header,
+.site-footer {
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a {
+  color: var(--link);
+}
+
+a:visited {
+  color: var(--link-visited);
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 1.75rem 0;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 1.65rem;
+  margin: 0 0 0.5rem;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin: 0 0 0.75rem;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+pre {
+  overflow-x: auto;
+  padding: 0.75rem 1rem;
+  background: #f8f9fa;
+  border: 1px solid var(--rule);
+}
+
+blockquote {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--rule);
+  color: var(--muted);
+}
+
+img {
+  max-width: 100%;
+}
+
+/* header */
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-sans);
+}
+
+.wordmark {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.wordmark:visited {
+  color: var(--text);
+}
+
+.site-nav a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.site-nav a:hover,
+.site-nav a:focus {
+  text-decoration: underline;
+}
+
+.site-nav span {
+  color: var(--muted);
+  margin: 0 0.35rem;
+}
+
+/* footer */
+
+.site-footer {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.site-footer a {
+  color: var(--muted);
+}
+
+.site-footer span {
+  margin: 0 0.35rem;
+}
+
+.colophon {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+/* home */
+
+.tagline {
+  font-family: var(--font-sans);
+  color: var(--muted);
+}
+
+.plain-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.plain-list li {
+  margin-bottom: 0.4rem;
+}
+
+/* post / project lists */
+
+.meta {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.post-list,
+.project-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-list li,
+.project-list li {
+  margin-bottom: 1.25rem;
+}
+
+.post-list--full li {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.post-title,
+.project-title {
+  font-size: 1.1rem;
+}
+
+.summary {
+  margin-top: 0.4rem;
+  margin-bottom: 0;
+}
+
+/* article */
+
+article .meta {
+  margin-bottom: 0;
+}
+
+.prose > *:first-child {
+  margin-top: 0;
+}

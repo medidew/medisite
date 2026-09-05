@@ -1,0 +1,17 @@
+{{define "content"}}
+<h1>Blog</h1>
+
+{{if .Posts}}
+<ul class="post-list post-list--full">
+  {{range .Posts}}
+  <li>
+    <a class="post-title" href="/blog/{{.Slug}}">{{.Title}}</a>
+    <div class="meta">{{.Date.Format "Jan 2, 2006"}}</div>
+    {{if .Summary}}<p class="summary">{{.Summary}}</p>{{end}}
+  </li>
+  {{end}}
+</ul>
+{{else}}
+<p>Nothing posted yet &mdash; check back soon.</p>
+{{end}}
+{{end}}

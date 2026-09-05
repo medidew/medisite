@@ -1,0 +1,19 @@
+{{define "content"}}
+<article>
+  <h1>{{.Post.Title}}</h1>
+  <p class="meta">
+    {{.Post.Date.Format "January 2, 2006"}}
+    {{if .Post.Tags}}&middot; {{range $i, $t := .Post.Tags}}{{if $i}}, {{end}}{{$t}}{{end}}{{end}}
+  </p>
+
+  <hr>
+
+  <div class="prose">
+    {{.Post.Content}}
+  </div>
+
+  <hr>
+
+  <p><a href="/blog">&larr; back to all posts</a></p>
+</article>
+{{end}}

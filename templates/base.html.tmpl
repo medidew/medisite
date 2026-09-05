@@ -1,0 +1,38 @@
+{{define "base"}}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{.Title}}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="/">medidew.name</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <span aria-hidden="true">&middot;</span>
+      <a href="/blog">Blog</a>
+      <span aria-hidden="true">&middot;</span>
+      <a href="/portfolio">Portfolio</a>
+    </nav>
+  </header>
+
+  <main>
+    {{template "content" .}}
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      <a href="https://github.com/medidew">GitHub</a>
+      <span aria-hidden="true">&middot;</span>
+      <a href="https://example.com">Mastodon</a>
+      <span aria-hidden="true">&middot;</span>
+      <a href="mailto:hello@medidew.name">Email</a>
+    </p>
+    <p class="colophon">Self-hosted, built with Go.</p>
+  </footer>
+</body>
+</html>
+{{end}}

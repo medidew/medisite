@@ -1,0 +1,47 @@
+{{define "content"}}
+<section class="intro">
+  <h1>medidew</h1>
+  <p class="tagline">Software engineer. Self-hoster. Occasional essayist.</p>
+  <p>
+    <!-- TODO: replace with your own bio -->
+    I write software, run most of it myself on hardware I own, and sometimes
+    write down what I've learned along the way. This site collects that
+    writing, a portfolio of what I've built, and links to find me elsewhere.
+  </p>
+</section>
+
+<hr>
+
+<section class="elsewhere">
+  <h2>Elsewhere</h2>
+  <ul class="plain-list">
+    <!-- TODO: replace with your real social links -->
+    <li><a href="https://github.com/medidew">GitHub</a></li>
+    <li><a href="https://example.com">Mastodon</a></li>
+    <li><a href="mailto:hello@medidew.name">Email</a></li>
+  </ul>
+</section>
+
+<hr>
+
+<section class="recent-posts">
+  <h2>Recent posts</h2>
+  {{if .Recent}}
+  <ul class="post-list">
+    {{range .Recent}}
+    <li>
+      <a href="/blog/{{.Slug}}">{{.Title}}</a>
+      <span class="meta">{{.Date.Format "Jan 2, 2006"}}</span>
+    </li>
+    {{end}}
+  </ul>
+  <p><a href="/blog">more posts &rarr;</a></p>
+  {{else}}
+  <p>Nothing posted yet &mdash; check back soon.</p>
+  {{end}}
+</section>
+
+<hr>
+
+<p><a href="/portfolio">See my portfolio &rarr;</a></p>
+{{end}}

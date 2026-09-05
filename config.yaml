@@ -1,0 +1,9 @@
+# medisite server configuration.
+# Any field omitted here falls back to its built-in default
+# (see internal/config/config.go).
+
+addr: "127.0.0.1:8080"
+content_dir: "content"
+templates_dir: "templates"
+static_dir: "static"
+log_file: "medisite.log"

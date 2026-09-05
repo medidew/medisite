@@ -1,0 +1,17 @@
+{{define "content"}}
+<h1>Portfolio</h1>
+
+{{if .Projects}}
+<ul class="project-list">
+  {{range .Projects}}
+  <li>
+    <a class="project-title" href="{{.Link}}">{{.Title}}</a>
+    <p>{{.Description}}</p>
+    {{if .Tags}}<p class="meta">{{range $i, $t := .Tags}}{{if $i}}, {{end}}{{$t}}{{end}}</p>{{end}}
+  </li>
+  {{end}}
+</ul>
+{{else}}
+<p>Nothing listed yet &mdash; check back soon.</p>
+{{end}}
+{{end}}

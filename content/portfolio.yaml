@@ -1,0 +1,5 @@
+projects:
+  - title: "medisite"
+    description: "This site: a small Go server rendering Markdown posts and a portfolio through plain html/template pages."
+    link: "https://github.com/medidew/medisite"
+    tags: [go, self-hosted]
