@@ -1,23 +1,13 @@
 # systemd unit for medisite (medidew.name), reverse-proxied by nginx.
 #
-# Install:
-#   go build -o medisite .
-#   sudo useradd --system --no-create-home --shell /usr/sbin/nologin medisite
-#   sudo mkdir -p /opt/medisite
-#   sudo cp medisite config.yaml /opt/medisite/
-#   sudo cp -r content templates static /opt/medisite/
-#   sudo chown -R medisite:medisite /opt/medisite
-#   sudo cp deploy/medisite.service /etc/systemd/system/medisite.service
-#   sudo systemctl daemon-reload
-#   sudo systemctl enable --now medisite
-#
-# Redeploy after changes:
-#   - New binary: rebuild, copy over /opt/medisite/medisite, then
-#     `sudo systemctl restart medisite`.
-#   - New/edited post, portfolio entry, template, or CSS: copy the changed
-#     file(s) into /opt/medisite, then `sudo systemctl restart medisite`
-#     (content and templates are read from disk at startup, not embedded
-#     in the binary — see CLAUDE.md).
+# Install and redeploy: sudo ./deploy/install.sh
+#   Builds the binary, creates the "medisite" system user and /opt/medisite
+#   if needed, installs this unit, and (re)starts the service. Safe to
+#   re-run after any code, config, template, or static change — see that
+#   script's header for exactly what it does and does not touch (notably,
+#   it never overwrites content/ once it exists, so posts and portfolio
+#   entries edited directly on the server are never clobbered by a
+#   redeploy).
 #
 # Logs: journalctl -u medisite -f, and /opt/medisite/medisite.log (the
 # log_file path from config.yaml), which the service account needs write
