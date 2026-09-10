@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-# Builds medisite and installs/updates it as a systemd service under
-# /opt/medisite. Safe to re-run for redeploys (e.g. after a code or
-# static/template change) — it rebuilds the binary and restarts the
-# service. It does NOT touch content/ once it exists, so it never
-# clobbers posts or portfolio entries edited directly on the server;
-# content/ is only seeded from the repo on the very first install.
+# Builds medisite and installs/updates it as a systemd service: the
+# binary, templates/, and static/ under /opt/medisite, config.yaml under
+# /etc/medisite, and logs under /var/log/medisite. Safe to re-run for
+# redeploys (e.g. after a code, config, or static/template change) — it
+# rebuilds the binary and restarts the service. It does NOT touch
+# content/ once it exists, so it never clobbers posts or portfolio
+# entries edited directly on the server; content/ is only seeded from
+# the repo on the very first install.
 #
 # Usage: sudo ./deploy/install.sh
 
@@ -12,6 +14,8 @@ set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 INSTALL_DIR=/opt/medisite
+CONFIG_DIR=/etc/medisite
+LOG_DIR=/var/log/medisite
 SERVICE_USER=medisite
 SERVICE_NAME=medisite.service
 
@@ -28,12 +32,14 @@ if ! id -u "$SERVICE_USER" >/dev/null 2>&1; then
   useradd --system --no-create-home --shell /usr/sbin/nologin "$SERVICE_USER"
 fi
 
-echo "==> Ensuring $INSTALL_DIR exists"
-mkdir -p "$INSTALL_DIR"
+echo "==> Ensuring $INSTALL_DIR, $CONFIG_DIR, and $LOG_DIR exist"
+mkdir -p "$INSTALL_DIR" "$CONFIG_DIR" "$LOG_DIR"
 
-echo "==> Installing binary and config"
+echo "==> Installing binary"
 cp "$REPO_DIR/medisite" "$INSTALL_DIR/medisite"
-cp "$REPO_DIR/config.yaml" "$INSTALL_DIR/config.yaml"
+
+echo "==> Installing config"
+cp "$REPO_DIR/config.yaml" "$CONFIG_DIR/config.yaml"
 
 echo "==> Syncing templates and static assets"
 for dir in templates static; do
@@ -49,7 +55,7 @@ else
 fi
 
 echo "==> Setting ownership"
-chown -R "$SERVICE_USER:$SERVICE_USER" "$INSTALL_DIR"
+chown -R "$SERVICE_USER:$SERVICE_USER" "$INSTALL_DIR" "$CONFIG_DIR" "$LOG_DIR"
 
 echo "==> Installing systemd service"
 cp "$REPO_DIR/deploy/medisite.service" "/etc/systemd/system/$SERVICE_NAME"

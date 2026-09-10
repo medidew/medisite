@@ -9,7 +9,9 @@
 #   entries edited directly on the server are never clobbered by a
 #   redeploy).
 #
-# Logs: journalctl -u medisite -f, and /opt/medisite/medisite.log (the
+# Config: /etc/medisite/config.yaml.
+#
+# Logs: journalctl -u medisite -f, and /var/log/medisite/medisite.log (the
 # log_file path from config.yaml), which the service account needs write
 # access to — covered by ReadWritePaths below.
 
@@ -24,17 +26,20 @@ Type=simple
 User=medisite
 Group=medisite
 WorkingDirectory=/opt/medisite
-ExecStart=/opt/medisite/medisite -config /opt/medisite/config.yaml
+ExecStart=/opt/medisite/medisite -config /etc/medisite/config.yaml
 Restart=on-failure
 RestartSec=5
 
-# Sandboxing. medisite listens on 127.0.0.1 (an unprivileged port) and
-# only needs to read its working directory and write its log file there,
-# so no elevated capabilities or broad filesystem access are required.
+# Sandboxing. medisite listens on 127.0.0.1 (an unprivileged port), only
+# reads its working directory and config file, and writes only its log
+# file, so no elevated capabilities or broad filesystem access are
+# required. /etc/medisite is covered by the default read access under
+# ProtectSystem=strict (reads aren't restricted, only writes); only the
+# log directory needs to be listed in ReadWritePaths.
 NoNewPrivileges=true
 ProtectSystem=strict
 ProtectHome=true
-ReadWritePaths=/opt/medisite
+ReadWritePaths=/var/log/medisite
 PrivateTmp=true
 ProtectKernelTunables=true
 ProtectKernelModules=true
