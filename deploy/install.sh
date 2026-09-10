@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 # Builds medisite and installs/updates it as a systemd service: the
-# binary, templates/, and static/ under /opt/medisite, config.yaml under
-# /etc/medisite, and logs under /var/log/medisite. Safe to re-run for
-# redeploys (e.g. after a code, config, or static/template change) — it
-# rebuilds the binary and restarts the service. It does NOT touch
-# content/ once it exists, so it never clobbers posts or portfolio
-# entries edited directly on the server; content/ is only seeded from
-# the repo on the very first install.
+# binary, templates/, and static/ under /opt/medisite, and
+# deploy/config.production.yaml (NOT the repo-root config.yaml, which is
+# local-dev-only) under /etc/medisite/config.yaml, with logs going to
+# /var/log/medisite. Safe to re-run for redeploys (e.g. after a code,
+# config, or static/template change) — it rebuilds the binary and
+# restarts the service. It does NOT touch content/ once it exists, so it
+# never clobbers posts or portfolio entries edited directly on the
+# server; content/ is only seeded from the repo on the very first
+# install.
 #
 # Usage: sudo ./deploy/install.sh
 
@@ -39,7 +41,7 @@ echo "==> Installing binary"
 cp "$REPO_DIR/medisite" "$INSTALL_DIR/medisite"
 
 echo "==> Installing config"
-cp "$REPO_DIR/config.yaml" "$CONFIG_DIR/config.yaml"
+cp "$REPO_DIR/deploy/config.production.yaml" "$CONFIG_DIR/config.yaml"
 
 echo "==> Syncing templates and static assets"
 for dir in templates static; do

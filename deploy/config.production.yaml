@@ -1,0 +1,13 @@
+# medisite server configuration — production.
+# Installed to /etc/medisite/config.yaml by deploy/install.sh; not used
+# for local development (see config.yaml at the repo root for that).
+#
+# content_dir/templates_dir/static_dir stay relative to the service's
+# WorkingDirectory (/opt/medisite, set in deploy/medisite.service);
+# log_file is an absolute path since it lives outside that directory.
+
+addr: "127.0.0.1:8080"
+content_dir: "content"
+templates_dir: "templates"
+static_dir: "static"
+log_file: "/var/log/medisite/medisite.log"
