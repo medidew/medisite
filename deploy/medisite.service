@@ -1,0 +1,63 @@
+# systemd unit for medisite (medidew.name), reverse-proxied by nginx.
+#
+# Install:
+#   go build -o medisite .
+#   sudo useradd --system --no-create-home --shell /usr/sbin/nologin medisite
+#   sudo mkdir -p /opt/medisite
+#   sudo cp medisite config.yaml /opt/medisite/
+#   sudo cp -r content templates static /opt/medisite/
+#   sudo chown -R medisite:medisite /opt/medisite
+#   sudo cp deploy/medisite.service /etc/systemd/system/medisite.service
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now medisite
+#
+# Redeploy after changes:
+#   - New binary: rebuild, copy over /opt/medisite/medisite, then
+#     `sudo systemctl restart medisite`.
+#   - New/edited post, portfolio entry, template, or CSS: copy the changed
+#     file(s) into /opt/medisite, then `sudo systemctl restart medisite`
+#     (content and templates are read from disk at startup, not embedded
+#     in the binary — see CLAUDE.md).
+#
+# Logs: journalctl -u medisite -f, and /opt/medisite/medisite.log (the
+# log_file path from config.yaml), which the service account needs write
+# access to — covered by ReadWritePaths below.
+
+[Unit]
+Description=medisite web server (medidew.name)
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=medisite
+Group=medisite
+WorkingDirectory=/opt/medisite
+ExecStart=/opt/medisite/medisite -config /opt/medisite/config.yaml
+Restart=on-failure
+RestartSec=5
+
+# Sandboxing. medisite listens on 127.0.0.1 (an unprivileged port) and
+# only needs to read its working directory and write its log file there,
+# so no elevated capabilities or broad filesystem access are required.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/medisite
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+ProtectClock=true
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+[Install]
+WantedBy=multi-user.target

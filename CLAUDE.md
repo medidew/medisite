@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `medisite` is a small Go web server for a personal blog/portfolio/link-hub site (`medidew.name`), deployed behind an existing nginx reverse proxy. It renders server-side HTML via `html/template` — no frontend framework, no JS build step, no client-side JS beyond what's in the static CSS.
 
+In production it runs as a systemd service (`deploy/medisite.service`, install/redeploy steps documented in its header comment) under a dedicated unprivileged `medisite` system user, with `WorkingDirectory=/opt/medisite` — the same directory holding the binary, `config.yaml`, `content/`, `templates/`, and `static/`, since those are read from disk relative to the working directory (see below). Redeploying a code change means rebuilding and restarting the service; redeploying a content/template/CSS change means copying the changed file and restarting — there's no separate "reload" path.
+
 ## Commands
 
 ```bash
