@@ -296,3 +296,7 @@ article .meta {
 .prose>*:first-child {
   margin-top: 0;
 }
+
+.prose h2 {
+  margin-top: 2rem;
+}

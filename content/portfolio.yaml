@@ -1,5 +1,13 @@
 projects:
   - title: "medisite"
-    description: "This site: a small Go server rendering Markdown posts and a portfolio through plain html/template pages."
+    description: "This website: a small Go web server rendering Markdown posts and a portfolio through plain html/template pages."
     link: "https://github.com/medidew/medisite"
     tags: [go, self-hosted]
+  - title: "medivpn"
+    description: "A command line configuration tool for my VPN setup allowing me to use both Tailscale and ProtonVPN on android devices (and control server selection from the terminal)."
+    link: "https://github.com/medidew/medivpn"
+    tags: [go, privacy, self-hosted]
+  - title: "Matrix Synapse"
+    description: "A self-hosted instance of federated Matrix Synapse server for private communications."
+    link: "https://matrix.medidew.name/_matrix/static/"
+    tags: [privacy, self-hosted]
