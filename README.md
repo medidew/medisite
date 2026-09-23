@@ -8,7 +8,7 @@ The site has three sections:
 - **Blog**: posts written in Markdown, listed newest first, with a simple full-text search.
 - **Portfolio**: a list of projects, each with a description, tags, and a link.
 
-The design is deliberately plain, as explained on the home page.There is no client-side JavaScript. Blog posts are Markdown files in `content/posts/`, each starting with a YAML frontmatter block. Each page is an `html/template` file in `templates/` that fills in a `content` block inside the shared layout in `base.html.tmpl`.
+The design is deliberately plain, as explained on the home page. There is no client-side JavaScript. Blog posts are Markdown files in `content/posts/`, each starting with a YAML frontmatter block. Each page is an `html/template` file in `templates/` that fills in a `content` block inside the shared layout in `base.html.tmpl`.
 
 ## Dependencies
 
