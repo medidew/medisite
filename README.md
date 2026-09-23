@@ -12,11 +12,12 @@ The design is deliberately plain, as explained on the home page. There is no cli
 
 ## Dependencies
 
-- **Go** (1.22+ routing patterns), using only the standard library for HTTP (`net/http`) and templating (`html/template`).
-- **[goldmark](https://github.com/yuin/goldmark)** to render Markdown posts to HTML.
-- **[yaml.v3](https://gopkg.in/yaml.v3)** to parse post frontmatter, the portfolio list, and the server config.
-- **[zap](https://github.com/uber-go/zap)** for structured logging, with **[lumberjack](https://github.com/natefinch/lumberjack)** rotating the log file.
-- **systemd** to run the server as a sandboxed service, and **nginx** (configured separately) as the public-facing reverse proxy.
+- **Go** (1.22+)
+- **[goldmark](https://github.com/yuin/goldmark)**
+- **[yaml.v3](https://gopkg.in/yaml.v3)**
+- **[zap](https://github.com/uber-go/zap)**
+- **[lumberjack](https://github.com/natefinch/lumberjack)**
+- **systemd**
 
 The web server is designed to run on Linux distributions, but is only tested on Ubuntu Server.
 
