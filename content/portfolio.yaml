@@ -1,4 +1,8 @@
 projects:
+  - title: "lyrion-tui"
+    description: "A terminal user interface for interacting with Lyrion Music Servers."
+    link: "https://github.com/medidew/lyrion-tui"
+    tags: [go, tui]
   - title: "medisite"
     description: "This website: a small Go web server rendering Markdown posts and a portfolio through plain html/template pages."
     link: "https://github.com/medidew/medisite"
@@ -11,3 +15,15 @@ projects:
     description: "A self-hosted instance of federated Matrix Synapse server for private communications."
     link: "https://matrix.medidew.name/_matrix/static/"
     tags: [privacy, self-hosted]
+  - title: "Bluesky PDS"
+    description: "A self-hosted instance of a Bluesky PDS."
+    link: "https://bsky.app/profile/medidew.name"
+    tags: [self-hosted]
+  - title: "CG-NAT Bypass"
+    description: "A networking setup using an Oracle Cloud computer instance to relay public network traffic via Tailscale, bypassing selfhosting limitations imposed by Carrier Grade NAT. Pending documentation."
+    link: "https://medidew.name/portfolio"
+    tags: [networking, self-hosted]
+  - title: "Application Tracker"
+    description: "A backend API for a web application tracking job applications."
+    link: "https://github.com/medidew/ApplicationTracker"
+    tags: [go, backend, api]
