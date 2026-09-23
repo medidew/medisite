@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
-# Updates an existing medisite install (set up by deploy/install.sh) from
-# this repo checkout: rebuilds the binary and replaces the installed one,
-# and replaces templates/, static/, and content/ (posts + portfolio.yaml)
-# under /opt/medisite with the repo's copies, then restarts the service.
+# Replaces the site content (content/: posts + portfolio.yaml) of an
+# existing medisite install (set up by deploy/install.sh) with this repo
+# checkout's copy, then restarts the service so it's reloaded.
 #
 # Unlike install.sh, this DOES overwrite content/ — the repo becomes the
 # source of truth for posts and portfolio entries. Anything edited
-# directly on the server is moved aside, not deleted: every replaced item
-# (binary, templates/, static/, content/) is kept next to the live one
-# with a .prev suffix, overwritten by the next update. To roll back:
+# directly on the server is moved aside, not deleted: the replaced
+# content/ is kept next to the live one as content.prev, overwritten by
+# the next update. To roll back:
 #   sudo ./deploy/update.sh --rollback
 #
-# It does not touch the config, the systemd unit, or the service user —
-# re-run install.sh for those.
+# It touches nothing but content/ — the binary, templates/, static/,
+# config, systemd unit, and service user are all install.sh's job
+# (re-run it for code, template, CSS, or config changes).
 #
 # Usage: sudo ./deploy/update.sh [--rollback]
 
@@ -22,14 +22,14 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 INSTALL_DIR=/opt/medisite
 SERVICE_USER=medisite
 SERVICE_NAME=medisite.service
-ITEMS=(medisite templates static content)
+CONTENT="$INSTALL_DIR/content"
 
 if [[ $EUID -ne 0 ]]; then
   echo "error: this script must be run as root (sudo $0)" >&2
   exit 1
 fi
 
-if [[ ! -x "$INSTALL_DIR/medisite" ]]; then
+if [[ ! -d "$CONTENT" ]]; then
   echo "error: no existing install at $INSTALL_DIR — run deploy/install.sh first" >&2
   exit 1
 fi
@@ -37,8 +37,8 @@ fi
 restart_and_check() {
   echo "==> Restarting $SERVICE_NAME"
   systemctl restart "$SERVICE_NAME"
-  # medisite fails fast on bad content/templates, so give it a moment to
-  # either come up or exit before checking.
+  # medisite fails fast on bad content, so give it a moment to either come
+  # up or exit before checking.
   sleep 2
   if systemctl is-active --quiet "$SERVICE_NAME"; then
     echo "$SERVICE_NAME is active"
@@ -49,45 +49,32 @@ restart_and_check() {
 }
 
 if [[ "${1:-}" == "--rollback" ]]; then
-  for item in "${ITEMS[@]}"; do
-    if [[ ! -e "$INSTALL_DIR/$item.prev" ]]; then
-      echo "error: $INSTALL_DIR/$item.prev not found, nothing to roll back to" >&2
-      exit 1
-    fi
-  done
-  echo "==> Rolling back to the previous version"
-  for item in "${ITEMS[@]}"; do
-    rm -rf "${INSTALL_DIR:?}/$item.failed"
-    mv "$INSTALL_DIR/$item" "$INSTALL_DIR/$item.failed"
-    mv "$INSTALL_DIR/$item.prev" "$INSTALL_DIR/$item"
-    mv "$INSTALL_DIR/$item.failed" "$INSTALL_DIR/$item.prev"
-  done
+  if [[ ! -e "$CONTENT.prev" ]]; then
+    echo "error: $CONTENT.prev not found, nothing to roll back to" >&2
+    exit 1
+  fi
+  echo "==> Rolling back to the previous content"
+  rm -rf "$CONTENT.failed"
+  mv "$CONTENT" "$CONTENT.failed"
+  mv "$CONTENT.prev" "$CONTENT"
+  mv "$CONTENT.failed" "$CONTENT.prev"
   restart_and_check
   exit $?
 fi
 
-# Stage everything next to the live files first, so a failed build or copy
+# Stage the new content next to the live copy first, so a failed copy
 # leaves the running install untouched, and the swap below is just renames.
 STAGE_DIR="$(mktemp -d "$INSTALL_DIR/.update.XXXXXX")"
 trap 'rm -rf "$STAGE_DIR"' EXIT
 
-echo "==> Building medisite in $REPO_DIR"
-( cd "$REPO_DIR" && go build -o "$STAGE_DIR/medisite" . )
-
-echo "==> Staging templates, static assets, and content"
-for dir in templates static content; do
-  cp -r "$REPO_DIR/$dir" "$STAGE_DIR/$dir"
-done
+echo "==> Staging content"
+cp -r "$REPO_DIR/content" "$STAGE_DIR/content"
 chown -R "$SERVICE_USER:$SERVICE_USER" "$STAGE_DIR"
 
-# Renaming (rather than cp over) the binary also avoids "Text file busy"
-# from overwriting an executable that is currently running.
-echo "==> Swapping in the new version (previous kept as *.prev)"
-for item in "${ITEMS[@]}"; do
-  rm -rf "${INSTALL_DIR:?}/$item.prev"
-  mv "$INSTALL_DIR/$item" "$INSTALL_DIR/$item.prev"
-  mv "$STAGE_DIR/$item" "$INSTALL_DIR/$item"
-done
+echo "==> Swapping in the new content (previous kept as content.prev)"
+rm -rf "$CONTENT.prev"
+mv "$CONTENT" "$CONTENT.prev"
+mv "$STAGE_DIR/content" "$CONTENT"
 
 if ! restart_and_check; then
   echo "hint: roll back with: sudo $0 --rollback" >&2

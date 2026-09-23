@@ -6,7 +6,7 @@
 # WorkingDirectory (/opt/medisite, set in deploy/medisite.service);
 # log_file is an absolute path since it lives outside that directory.
 
-addr: "127.0.0.1:8080"
+addr: "127.0.0.1:8081"
 content_dir: "content"
 templates_dir: "templates"
 static_dir: "static"
